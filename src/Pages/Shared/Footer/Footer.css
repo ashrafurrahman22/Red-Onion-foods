@@ -1,0 +1,14 @@
+.footer-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 20px;
+    background-color: black;
+    color: white;
+    margin: 0 auto;
+    padding: 10px;
+}
+.footer-img {
+    margin-left: 40px;
+    width: 150px;
+
+}
