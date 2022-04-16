@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
+import auth from '../../../firebase.init';
+import SocialLogin from '../../Shared/SocialLogin/SocialLogin';
+import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { useNavigate } from 'react-router-dom';
+
 
 const SignUp = () => {
 
@@ -7,6 +12,24 @@ const SignUp = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const navigate = useNavigate();
+
+    const [
+      createUserWithEmailAndPassword,
+      user,
+      loading,
+      error,
+    ] = useCreateUserWithEmailAndPassword(auth,  {sendEmailVerification:true});
+
+    let errorElement;
+    if(error){
+      errorElement = error.message;
+    }
+
+    if(user){
+      navigate('/home')
+      console.log('user', user);
+    }
 
     const handleNameBlur = event => {
       setName(event.target.value)
@@ -21,15 +44,15 @@ const SignUp = () => {
       setConfirmPassword(event.target.value)
     }
 
-    const handleSubmit = event => {
+    const handleSubmit = (event) => {
       event.preventDefault();
-      console.log('clicked')
+      createUserWithEmailAndPassword(email, password);
     }
 
 
 
     return (
-        <Form onClick={handleSubmit} className='w-50 mx-auto my-5' id='form'>
+        <Form onClick={handleSubmit} className='w-50 mx-auto' id='form'>
   <Form.Group className="mb-3" controlId="formBasicEmail">
     <Form.Label>Name</Form.Label>
     <Form.Control onBlur={handleNameBlur} type="text" placeholder="Enter Your Name" />
@@ -48,11 +71,13 @@ const SignUp = () => {
     <Form.Control onBlur={handleConfirmPasswordBlur} type="password" placeholder="Confirm Password" />
   </Form.Group>
   <Form.Group className="mb-3" controlId="formBasicCheckbox">
-    <Form.Check type="checkbox" label="Accept Terms & Conditions" />
+    {/* <Form.Check type="checkbox" label="Accept Terms & Conditions" /> */}
   </Form.Group>
+  {errorElement}
   <Button variant="primary" type="submit">
     Sign Up
   </Button>
+  <SocialLogin></SocialLogin>
 </Form>
     );
 };

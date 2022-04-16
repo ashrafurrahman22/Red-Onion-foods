@@ -4,7 +4,7 @@ import './Footer.css'
 
 const Footer = () => {
     return (
-       <div>
+       <div id='footer'>
             <div className='footer-container'>
             <div className='mx-auto my-5'>
                 <img className='footer-img' src={footerLogo} alt="" />
